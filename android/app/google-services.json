@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "338225683803",
+    "project_id": "mdeamf-push-notification",
+    "storage_bucket": "mdeamf-push-notification.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:338225683803:android:bf1e497d87930f57ed8e7e",
+        "android_client_info": {
+          "package_name": "com.reactnativepushnotificationtypescript"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "338225683803-2ss0i6s7dd71vjsug6fb8kvbtfisgguf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCa-qzzW3J2XVrv4cAB9g0Iz1NtNOMm_Do"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "338225683803-2ss0i6s7dd71vjsug6fb8kvbtfisgguf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
