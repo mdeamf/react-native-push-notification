@@ -9,19 +9,51 @@
  */
 
 import React from 'react';
-import {SafeAreaView, ScrollView, StatusBar, Text} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import messaging from '@react-native-firebase/messaging';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 
 type Nullable<T> = T | undefined | null;
 interface Notification {
   title?: Nullable<string>;
   body?: Nullable<string>;
   origin?: Nullable<string>;
-  data?: Nullable<object>;
+  data?: Nullable<{[key: string]: string}>;
 }
+
+const OnePage: React.FC = () => {
+  return (
+    <View style={styles.page}>
+      <Text>This is my One Page!</Text>
+      <Text>Welcome!</Text>
+    </View>
+  );
+};
+
+const AnotherPage: React.FC = () => (
+  <>
+    <Text>This is my Another Page!</Text>
+    <Text>This opened via Push Notification!</Text>
+  </>
+);
 
 const App = () => {
   const [myNotif, setMyNotify] = React.useState<Notification>({});
+
+  const navigationRef = React.createRef<any>();
+
+  const PushNotificationContent = () => {
+    return (
+      <View style={styles.notif}>
+        <Text>Hello Push Notifications!</Text>
+        <Text>Title: {myNotif.title}</Text>
+        <Text>Body: {myNotif.body}</Text>
+        <Text>Origin: {myNotif.origin}</Text>
+        <Text>Data: {JSON.stringify(myNotif.data)}</Text>
+      </View>
+    );
+  };
 
   React.useEffect(() => {
     messaging()
@@ -74,18 +106,37 @@ const App = () => {
     };
   }, []);
 
+  React.useEffect(() => {
+    if (myNotif.data?.PageToOpen) {
+      console.log('Navigating to', myNotif.data.PageToOpen);
+      navigationRef.current?.navigate(myNotif.data.PageToOpen);
+    }
+  }, [myNotif, navigationRef]);
+
+  const Stack = createStackNavigator();
+
   return (
-    <SafeAreaView>
-      <StatusBar />
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <Text>Hello Push Notifications!</Text>
-        <Text>Title: {myNotif.title}</Text>
-        <Text>Body: {myNotif.body}</Text>
-        <Text>Origin: {myNotif.origin}</Text>
-        <Text>Data: {JSON.stringify(myNotif.data)}</Text>
-      </ScrollView>
-    </SafeAreaView>
+    <>
+      <PushNotificationContent />
+      <NavigationContainer ref={navigationRef}>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name="Home" component={OnePage} />
+          <Stack.Screen name="AnotherPage" component={AnotherPage} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
   );
 };
+
+const styles = StyleSheet.create({
+  notif: {
+    margin: 16,
+  },
+  page: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
 export default App;
